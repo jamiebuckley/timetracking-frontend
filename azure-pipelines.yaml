@@ -6,8 +6,10 @@ steps:
     versionSpec: '12.x'
 - script: npm install
 - script: npm run build
-- task: ArchiveFiles@2
+- task: AzureKeyVault@1
   inputs:
-    rootFolderOrFile: 'dist'
-    archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
-    replaceExistingArchive: true
+    azureSubscription: ServiceConnection1
+    keyVaultName: timetrackingappkeyvault
+    secretsFilter: '*'
+    runAsPreJob: false
+- script: az storage blob upload-batch - account-name timetrackingstorageacct --account-key $storageAccountKey - destination `$web` - source ./dist
