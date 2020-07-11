@@ -6,6 +6,6 @@ steps:
     versionSpec: '12.x'
 - script: npm install
 - script: npm run build
-- task: PublishBuildArtifact@1
+- task: PublishBuildArtifacts@1
   inputs:
     PathtoPublish: '${System.DefaultWorkingDirectory}/dist'
