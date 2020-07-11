@@ -1,11 +1,20 @@
 <template>
-  <div></div>
+  <div>
+    <ul>
+      <li v-for="project in projects" :key="project.name">{{project.name}}</li>
+    </ul>
+  </div>
 </template>
 
 <script>
 import Constants from "../constants";
 
 export default {
+  data() {
+    return {
+      projects: []
+    }
+  },
   mounted() {
     this.fetchProjects();
   },
@@ -20,8 +29,8 @@ export default {
           auth: idToken
         }
       })
-      const text = await response.text();
-      console.log(text);
+      const projects = await response.json();
+      this.projects = projects;
     }
   }
 };
