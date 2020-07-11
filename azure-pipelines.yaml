@@ -6,6 +6,8 @@ steps:
     versionSpec: '12.x'
 - script: npm install
 - script: npm run build
-- task: PublishBuildArtifacts@1
+- task: ArchiveFiles@2
   inputs:
-    PathToPublish: '${Build.ArtifactStagingDirectory}/dist'
+    rootFolderOrFile: 'dist'
+    archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+    replaceExistingArchive: true
