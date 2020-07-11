@@ -12,4 +12,4 @@ steps:
     keyVaultName: timetrackingappkeyvault
     secretsFilter: '*'
     runAsPreJob: false
-- script: az storage blob upload-batch --account-name timetrackingstorageacct --account-key $(storageAccountKey) --destination `$web` --source ./dist
+- script: az storage blob upload-batch --account-name timetrackingstorageacct --account-key $(storageAccountKey) --destination "\$web"  --source ./dist
