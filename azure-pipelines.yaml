@@ -1,0 +1,10 @@
+pool:
+  vmImage: 'ubuntu-latest'
+- task: NodeTool@0
+  inputs:
+    versionSpec: '12.x'
+- script: npm install
+- script: npm run build
+- task: PublishBuildArtifact@1
+  inputs:
+    PathtoPublish: '${System.DefaultWorkingDirectory}/dist'
