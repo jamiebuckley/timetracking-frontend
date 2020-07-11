@@ -1,12 +1,17 @@
 <template>
+  <div>
   <Header 
     v-bind:profile="profile"
     v-on:clickSignIn="signIn"
     v-on:clickSignOut="signOut"/>
+
+    <ProjectsList v-if="profile"/>
+  </div>
 </template>
 
 <script>
 import Header from './components/Header.vue';
+import ProjectsList from './components/ProjectsList';
 
 export default {
   data() {
@@ -26,7 +31,6 @@ export default {
       const authInstance = gapi.auth2.getAuthInstance();
       authInstance.then(() => {
         if (authInstance.isSignedIn.get() == true) {
-          console.log('is signed in');
           this.setProfile(authInstance.currentUser.get().getBasicProfile());
         }
       })
@@ -59,7 +63,8 @@ export default {
     }
   },
   components: {
-    Header
+    Header,
+    ProjectsList
   }
 }
 </script>
