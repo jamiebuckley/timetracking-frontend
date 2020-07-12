@@ -3,6 +3,8 @@
     <ul>
       <li v-for="project in projects" :key="project.name">{{project.name}}</li>
     </ul>
+    <input v-model="newProject.name"/>
+    <button v-on:click="saveProject">Save</button>
   </div>
 </template>
 
@@ -12,7 +14,10 @@ import Constants from "../constants";
 export default {
   data() {
     return {
-      projects: []
+      projects: [],
+      newProject: {
+
+      }
     }
   },
   mounted() {
@@ -31,6 +36,24 @@ export default {
       })
       const projects = await response.json();
       this.projects = projects;
+    },
+    saveProject: async function() {
+      const project = { name: this.newProject.name };
+      
+      /* eslint-disable */
+      const auth2 = await gapi.auth2.getAuthInstance();
+      const idToken = auth2.currentUser.get().getAuthResponse().id_token;
+      /* eslint-enable */
+      await fetch(Constants.BASE_URL + Constants.PROJECT_CREATE, {
+        method: 'POST',
+        body: JSON.stringify(project),
+        headers: {
+          auth: idToken
+        }
+      });
+      this.newProject = {};
+      this.fetchProjects();
+
     }
   }
 };
