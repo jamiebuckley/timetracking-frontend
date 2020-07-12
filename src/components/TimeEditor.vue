@@ -107,7 +107,7 @@ export default {
       i.add(1, "days")
     ) {
       days.push({
-        date: i.format(),
+        date: i.utcOffset(0, true).toISOString(false),
         dayOfMonth: i.format("D"),
         isInMonth: i.isSame(now, "month"),
         isToday: i.isSame(now, "day")

@@ -2,6 +2,8 @@
 
 [![Build Status](https://dev.azure.com/boreallodgeltd/Timetracking/_apis/build/status/jamiebuckley.timetracking-frontend?branchName=master)](https://dev.azure.com/boreallodgeltd/Timetracking/_build/latest?definitionId=2&branchName=master)
 
+[A simple app for time tracking](https://timetrackingstorageacct.z33.web.core.windows.net/)
+
 ## Project setup
 ```
 npm install

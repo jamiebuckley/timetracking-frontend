@@ -88,6 +88,7 @@ export default {
       this.projects = this.projects.filter(p => p.name != projectName);
     },
     async saveTime(newTimeEntry) {
+      console.log(this.selectedDay.date);
       await ApiService.createTimeEntry({
         ...newTimeEntry,
         dateTime: this.selectedDay.date
