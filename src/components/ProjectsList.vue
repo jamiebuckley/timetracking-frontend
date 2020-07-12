@@ -1,59 +1,65 @@
 <template>
-  <div>
-    <ul>
-      <li v-for="project in projects" :key="project.name">{{project.name}}</li>
-    </ul>
-    <input v-model="newProject.name"/>
-    <button v-on:click="saveProject">Save</button>
+  <div class="container py-md-5">
+    <div class="row">
+      <div class="col">
+
+      </div>
+      <div class="col">
+        <h2>Projects</h2>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item" v-for="project in projects" :key="project.name">
+            {{project.name}}
+            <button
+              class="btn btn-danger ml-md-3 float-right"
+              v-on:click="deleteProject(project.name)"
+            >Delete</button>
+          </li>
+        </ul>
+
+        <h2 class="mt-md-5">Add Project</h2>
+        <div class="form-inline">
+          <div class="input-group my-md-3 col-8 pl-md-0">
+            <input
+              class="form-control"
+              name="new-project-name"
+              v-model="newProject.name"
+              placeholder="Project Name"
+            />
+          </div>
+          <button class="btn btn-primary ml-md-3" v-on:click="saveProject">Add Project</button>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-import Constants from "../constants";
+import ApiService from "../apiService";
 
 export default {
   data() {
     return {
       projects: [],
-      newProject: {
-
-      }
-    }
+      newProject: {}
+    };
   },
   mounted() {
     this.fetchProjects();
   },
   methods: {
     fetchProjects: async function() {
-      /* eslint-disable */
-      const auth2 = await gapi.auth2.getAuthInstance();
-      const idToken = auth2.currentUser.get().getAuthResponse().id_token;
-      /* eslint-enable */
-      const response = await fetch(Constants.BASE_URL + Constants.PROJECTS_LIST, {
-        headers: {
-          auth: idToken
-        }
-      })
-      const projects = await response.json();
+      const projects = await ApiService.getProjects();
       this.projects = projects;
     },
     saveProject: async function() {
-      const project = { name: this.newProject.name };
-      
-      /* eslint-disable */
-      const auth2 = await gapi.auth2.getAuthInstance();
-      const idToken = auth2.currentUser.get().getAuthResponse().id_token;
-      /* eslint-enable */
-      await fetch(Constants.BASE_URL + Constants.PROJECT_CREATE, {
-        method: 'POST',
-        body: JSON.stringify(project),
-        headers: {
-          auth: idToken
-        }
-      });
+      const newProject = { name: this.newProject.name };
+      await ApiService.saveProject(newProject);
+      this.projects = [...this.projects, newProject];
       this.newProject = {};
-      this.fetchProjects();
-
+    },
+    deleteProject: async function(projectName) {
+      await ApiService.deleteProject({ name: projectName });
+      this.projects = this.projects.filter(p => p.name != projectName);
     }
   }
 };

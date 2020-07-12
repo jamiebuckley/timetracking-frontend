@@ -3,5 +3,6 @@ const BASE_URL = (process.env.NODE_ENV == 'development') ? 'http://localhost:707
 export default {
   BASE_URL,
   PROJECTS_LIST: 'api/ListProjects',
-  PROJECT_CREATE: 'api/CreateProject'
+  PROJECT_CREATE: 'api/CreateProject',
+  PROJECT_DELETE: 'api/DeleteProject'
 }
