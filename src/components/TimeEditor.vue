@@ -14,7 +14,13 @@
         class="col-sm day-box"
         v-bind:class="{ isInMonth: day.isInMonth, isToday: day.isToday }"
         v-on:click="onDaySelected(day)"
-      >{{day.dayOfMonth}}</div>
+      >{{day.dayOfMonth}}
+        <ul class="unstyledList">
+          <li v-for="(timeEntry, index) in timesForDay(day.date)" :key="index">
+            <span class="tinyText">{{timeEntry.projectName}}: {{timeEntry.amount}}{{timeEntry.unit.slice(0, 1)}}</span>
+          </li>
+        </ul>
+      </div>
     </div>
   </div>
 </template>
@@ -42,6 +48,16 @@ $light-green: rgb(217, 255, 213);
 .isToday {
   background-color: $light-green;
 }
+
+.tinyText {
+  font-size: 8px;
+}
+
+.unstyledList {
+  margin: 0px;
+  padding: 0px;
+  list-style-type: none;
+}
 </style>
 
 <script>
@@ -54,7 +70,7 @@ moment.updateLocale("en", {
 });
 
 export default {
-  props: ['onDaySelected', 'syncProjects'],
+  props: ['onDaySelected', 'syncProjects', 'times'],
   data() {
     return {
       weeks: [],
@@ -63,6 +79,12 @@ export default {
         name: "January"
       }
     };
+  },
+  methods: {
+    timesForDay(day) {
+      const dayMoment = moment(day);
+      return this.times.filter(t => moment(t.dateTime).isSame(dayMoment, "day"));
+    }
   },
   mounted() {
     const now = moment();
@@ -78,8 +100,6 @@ export default {
     const lastSunday = moment()
       .endOf("month")
       .endOf("week");
-    console.log(firstMonday);
-    console.log(lastSunday);
 
     for (
       let i = moment(firstMonday);

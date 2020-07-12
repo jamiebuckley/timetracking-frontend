@@ -39,6 +39,24 @@ class ApiService {
       body: JSON.stringify(project)
     });
   }
+
+  createTimeEntry(timeEntry) {
+    return this.fetchWithHeaders(Constants.BASE_URL + Constants.TIME_CREATE, {
+      method: 'POST',
+      body: JSON.stringify(timeEntry)
+    });
+  }
+
+  async queryTimeEntries(startDate, endDate) {
+    const response = await this.fetchWithHeaders(Constants.BASE_URL + Constants.TIMES_GET, {
+      method: 'POST',
+      body: JSON.stringify({
+        fromTime: startDate,
+        toTime: endDate
+      })
+    });
+    return await response.json();
+  }
 }
 
 const instance = new ApiService();

@@ -21,10 +21,20 @@
     <div v-if="tab == 'time'">
       <div class="row">
         <div class="col">
-          <TimeEditor v-bind:onDaySelected="onDaySelected" v-bind:syncProjects="syncProjects" />
+          <TimeEditor
+            v-bind:onDaySelected="onDaySelected"
+            v-bind:syncProjects="syncProjects"
+            v-bind:times="times"
+          />
         </div>
         <div class="col">
-          <DayEditor v-bind:selectedDay="selectedDay" v-bind:projects="projects" v-if="selectedDay" />
+          <DayEditor
+            v-bind:selectedDay="selectedDay"
+            v-bind:projects="projects"
+            v-bind:saveTime="saveTime"
+            v-bind:timesForDay="timesForDay"
+            v-if="selectedDay"
+          />
         </div>
       </div>
     </div>
@@ -37,13 +47,15 @@ import ApiService from "../apiService";
 import ProjectList from "./ProjectsList";
 import TimeEditor from "./TimeEditor";
 import DayEditor from "./DayEditor";
+import moment from "moment";
 
 export default {
   data() {
     return {
       tab: "time",
       projects: [],
-      selectedDay: null
+      selectedDay: null,
+      times: []
     };
   },
   components: {
@@ -53,11 +65,19 @@ export default {
   },
   mounted() {
     this.fetchProjects();
+    this.fetchTimes();
   },
   methods: {
     fetchProjects: async function() {
       const projects = await ApiService.getProjects();
       this.projects = projects;
+    },
+    fetchTimes: async function() {
+      const start = moment().startOf("month");
+      const end = moment().endOf("month");
+      const times = await ApiService.queryTimeEntries(start, end);
+      console.log(times);
+      this.times = times;
     },
     saveProject: async function(project) {
       await ApiService.saveProject(project);
@@ -67,11 +87,23 @@ export default {
       await ApiService.deleteProject({ name: projectName });
       this.projects = this.projects.filter(p => p.name != projectName);
     },
+    async saveTime(newTimeEntry) {
+      await ApiService.createTimeEntry({
+        ...newTimeEntry,
+        dateTime: this.selectedDay.date
+      });
+      this.fetchTimes();
+    },
     onDaySelected(day) {
       this.selectedDay = day;
     },
-    syncProjects(projects){
+    syncProjects(projects) {
       this.projects = projects;
+    }
+  },
+  computed: {
+    timesForDay() {
+      return this.times.filter(t => moment(t.dateTime).isSame(moment(this.selectedDay.date), "day"));
     }
   }
 };

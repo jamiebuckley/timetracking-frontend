@@ -4,5 +4,7 @@ export default {
   BASE_URL,
   PROJECTS_LIST: 'api/ListProjects',
   PROJECT_CREATE: 'api/CreateProject',
-  PROJECT_DELETE: 'api/DeleteProject'
+  PROJECT_DELETE: 'api/DeleteProject',
+  TIME_CREATE: 'api/CreateTimeEntry',
+  TIMES_GET: 'api/GetTimeEntries'
 }

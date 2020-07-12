@@ -3,8 +3,8 @@
     <h2>{{dayTitle}}</h2>
     <table class="table">
       <tbody>
-        <tr v-for="(timeEntry, index) in timeEntries" :key="index">
-          <td>{{timeEntry.projectName}}</td>
+        <tr v-for="(timeEntry, index) in timesForDay" :key="index">
+          <td>{{timeEntry.amount}} {{timeEntry.unit}} - {{timeEntry.projectName}}</td>
           <td>
             <button
               class="btn btn-danger ml-md-3 float-right"
@@ -18,7 +18,7 @@
     <form>
       <div class="form-group">
         <label for="project">Project</label>
-        <select class="form-control" v-model="newTimeEntry.name">
+        <select class="form-control" v-model="newTimeEntry.projectName">
           <option v-for="project in projects" :key="project.name">{{project.name}}</option>
         </select>
       </div>
@@ -41,7 +41,7 @@
         </div>
       </div>
 
-      <button class="btn btn-primary ml-md-3 float-right" v-on:click="saveTime">Add</button>
+      <button class="btn btn-primary ml-md-3 float-right" v-on:click="onSaveTimeClicked">Add</button>
     </form>
   </div>
 </template>
@@ -51,19 +51,22 @@
 
 <script>
 import moment from 'moment';
-
 export default {
-  props: ['selectedDay', 'projects'],
+  props: ['selectedDay', 'projects', 'saveTime', 'timesForDay'],
   data() {
     return {
-      timeEntries: [],
       newTimeEntry: {
         unit: "days"
       }
     };
   },
   methods: {
-    saveTime() {},
+    onSaveTimeClicked() {
+      this.saveTime(this.newTimeEntry);
+      this.newTimeEntry = {
+        unit: "days"
+      }
+    },
     deleteTime() {}
   },
   computed: {
