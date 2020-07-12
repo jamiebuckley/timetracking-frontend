@@ -5,13 +5,13 @@
     v-on:clickSignIn="signIn"
     v-on:clickSignOut="signOut"/>
 
-    <ProjectsList v-if="profile"/>
+    <Dashboard v-if="profile"/>
   </div>
 </template>
 
 <script>
 import Header from './components/Header.vue';
-import ProjectsList from './components/ProjectsList';
+import Dashboard from './components/Dashboard';
 
 export default {
   data() {
@@ -64,7 +64,7 @@ export default {
   },
   components: {
     Header,
-    ProjectsList
+    Dashboard
   }
 }
 </script>
