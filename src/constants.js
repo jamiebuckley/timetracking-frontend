@@ -6,5 +6,6 @@ export default {
   PROJECT_CREATE: 'api/projects',
   PROJECT_DELETE: 'api/projects',
   TIME_CREATE: 'api/timeEntries',
-  TIMES_GET: 'api/timeEntries'
+  TIMES_GET: 'api/timeEntries',
+  TIMES_DELETE: 'api/timeEntries'
 }

@@ -55,6 +55,17 @@ class ApiService {
     const response = await this.fetchWithHeaders(url);
     return await response.json();
   }
+
+  async deleteTimeEntry(key, dateTime) {
+    const url = new URL(Constants.BASE_URL + Constants.TIMES_DELETE);
+    const params = { key, dateTime };
+    Object.keys(params).forEach(key => url.searchParams.append(key, params[key]))
+
+    const response = await this.fetchWithHeaders(url, {
+      method: 'DELETE'
+    });
+    return await response.json();
+  }
 }
 
 const instance = new ApiService();

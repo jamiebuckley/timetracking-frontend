@@ -33,6 +33,7 @@
             v-bind:projects="projects"
             v-bind:saveTime="saveTime"
             v-bind:timesForDay="timesForDay"
+            v-bind:deleteTimeEntry="deleteTimeEntry"
             v-if="selectedDay"
           />
         </div>
@@ -88,12 +89,15 @@ export default {
       this.projects = this.projects.filter(p => p.name != projectName);
     },
     async saveTime(newTimeEntry) {
-      console.log(this.selectedDay.date);
       await ApiService.createTimeEntry({
         ...newTimeEntry,
         dateTime: this.selectedDay.date
       });
       this.fetchTimes();
+    },
+    async deleteTimeEntry(timeEntry) {
+      await ApiService.deleteTimeEntry(timeEntry.key, timeEntry.dateTime);
+      this.times = this.times.filter(t => t !== timeEntry);
     },
     onDaySelected(day) {
       this.selectedDay = day;

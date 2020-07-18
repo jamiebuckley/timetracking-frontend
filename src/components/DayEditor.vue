@@ -8,7 +8,7 @@
           <td>
             <button
               class="btn btn-danger ml-md-3 float-right"
-              v-on:click="deleteTime(timeEntry)"
+              v-on:click="deleteTimeEntry(timeEntry)"
             >Delete</button>
           </td>
         </tr>
@@ -50,7 +50,7 @@
 <script>
 import moment from 'moment';
 export default {
-  props: ['selectedDay', 'projects', 'saveTime', 'timesForDay'],
+  props: ['selectedDay', 'projects', 'saveTime', 'timesForDay', 'deleteTimeEntry'],
   data() {
     return {
       newTimeEntry: {
@@ -64,8 +64,7 @@ export default {
       this.newTimeEntry = {
         unit: "days"
       }
-    },
-    deleteTime() {}
+    }
   },
   computed: {
     dayTitle: function() {
