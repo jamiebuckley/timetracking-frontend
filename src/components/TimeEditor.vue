@@ -17,7 +17,7 @@
       >{{day.dayOfMonth}}
         <ul class="unstyledList">
           <li v-for="(timeEntry, index) in timesForDay(day.date)" :key="index">
-            <span class="tinyText">{{timeEntry.projectName}}: {{timeEntry.amount}}{{timeEntry.unit.slice(0, 1)}}</span>
+            <span class="tinyText" v-bind:style="{ background: timeEntry.background, color: timeEntry.color }">{{timeEntry.projectName}}: {{timeEntry.amount}}{{timeEntry.unit.slice(0, 1)}}</span>
           </li>
         </ul>
       </div>
@@ -31,7 +31,7 @@ $light-yellow: #ffffe3;
 $light-green: rgb(217, 255, 213);
 
 .day-box {
-  height: 100px;
+  height: 120px;
   padding: 8px;
   background-color: $light-grey;
 }
@@ -51,6 +51,11 @@ $light-green: rgb(217, 255, 213);
 
 .tinyText {
   font-size: 8px;
+  width:100%;
+  display: block;
+  padding: 4px;
+  border-radius: 5px;
+  margin-bottom: 2px;
 }
 
 .unstyledList {
@@ -70,7 +75,7 @@ moment.updateLocale("en", {
 });
 
 export default {
-  props: ['onDaySelected', 'syncProjects', 'times', 'moveBackMonth', 'moveForwardMonth', 'currentMonth'],
+  props: ['onDaySelected', 'syncProjects', 'times', 'moveBackMonth', 'moveForwardMonth', 'currentMonth', 'projects'],
   data() {
     return {
 
@@ -79,7 +84,14 @@ export default {
   methods: {
     timesForDay(day) {
       const dayMoment = moment(day);
-      return this.times.filter(t => moment(t.dateTime).isSame(dayMoment, "day"));
+      let times = this.times.filter(t => moment(t.dateTime).isSame(dayMoment, "day"));
+      times = times.map(t => {
+        const project = this.projects.find(p => p.name === t.projectName);
+        if (project) t.background = project.color;
+        else t.background = '#EEEEEE';
+        return t;
+      })
+      return times;
     }
   },
   mounted() {

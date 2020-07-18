@@ -1,6 +1,6 @@
 <template>
-  <div class="container py-md-5">
-    <ul class="nav nav-tabs mb-md-3">
+  <div class="container-fluid py-md-5 py-3">
+    <ul class="nav nav-tabs mb-3">
       <li class="nav-item">
         <a
           class="nav-link"
@@ -20,23 +20,25 @@
     </ul>
     <div v-if="tab == 'time'">
       <div class="row">
-        <div class="col">
+        <div class="col ml-md-3">
           <TimeEditor
             v-bind:onDaySelected="onDaySelected"
             v-bind:syncProjects="syncProjects"
             v-bind:currentMonth="startOfMonth"
             v-bind:moveBackMonth="moveBackMonth"
             v-bind:moveForwardMonth="moveForwardMonth"
+            v-bind:projects="projects"
             v-bind:times="times"
           />
         </div>
-        <div class="col">
+        <div class="col dayEditor" v-bind:class="{ slideIn: !!selectedDay }">
           <DayEditor
             v-bind:selectedDay="selectedDay"
             v-bind:projects="projects"
             v-bind:saveTime="saveTime"
             v-bind:timesForDay="timesForDay"
             v-bind:deleteTimeEntry="deleteTimeEntry"
+            v-bind:cancelDaySelection="cancelDaySelection"
             v-if="selectedDay"
           />
         </div>
@@ -45,6 +47,33 @@
     <ProjectList v-if="tab == 'projects'" v-bind="{ projects, saveProject, deleteProject }" />
   </div>
 </template>
+
+<style>
+  @media only screen and (max-width: 800px) {
+    @keyframes slide-in {
+      from {left: 100%}
+      to {left: 20%}
+    }
+
+    .dayEditor {
+      display:none;
+      position:fixed;
+      background:white;
+      height:100%;
+      padding-top: 25px;
+      top: 0px;
+      border-left: 1px black;
+      width: 80%;
+      left: 20%;
+    }
+
+    .slideIn {
+      display:block;
+      animation-name: slide-in;
+      animation-duration: 0.5s;
+    }
+  }
+</style>
 
 <script>
 import ApiService from "../apiService";
@@ -81,7 +110,7 @@ export default {
       this.projects = projects;
     },
     fetchTimes: async function() {
-      const times = await ApiService.queryTimeEntries(this.startOfMonth.toISOString(), this.endOfMonth.toISOString());
+      const times = await ApiService.queryTimeEntries(this.startOfMonth, this.endOfMonth);
       this.times = times;
     },
     saveProject: async function(project) {
@@ -120,6 +149,9 @@ export default {
       this.endOfMonth =  moment(this.endOfMonth).utcOffset(0, true).add(1, 'month');
       this.fetchProjects();
       this.fetchTimes();
+    },
+    cancelDaySelection() {
+      this.selectedDay = null;
     }
   },
   computed: {

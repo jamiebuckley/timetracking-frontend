@@ -40,6 +40,7 @@
       </div>
     </div>
 
+    <button class="btn btn-danger ml-md-3" v-on:click="this.cancelDaySelection">Close</button>
     <button class="btn btn-primary ml-md-3 float-right" v-on:click="onSaveTimeClicked">Add</button>
   </div>
 </template>
@@ -50,7 +51,7 @@
 <script>
 import moment from 'moment';
 export default {
-  props: ['selectedDay', 'projects', 'saveTime', 'timesForDay', 'deleteTimeEntry'],
+  props: ['selectedDay', 'projects', 'saveTime', 'timesForDay', 'deleteTimeEntry', 'cancelDaySelection'],
   data() {
     return {
       newTimeEntry: {

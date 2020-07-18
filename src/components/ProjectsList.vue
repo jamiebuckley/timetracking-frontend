@@ -7,6 +7,14 @@
         <tr v-for="project in projects" :key="project.name">
           <td>{{project.name}}</td>
           <td>
+            <input type="color"
+                   class="form-control"
+                   name="new-project-color"
+                   v-model="project.color"
+                   disabled="disabled"
+            />
+          </td>
+          <td>
             <button
               class="btn btn-danger ml-md-3 float-right"
               v-on:click="deleteProject(project.name)"
@@ -20,6 +28,13 @@
               name="new-project-name"
               v-model="newProject.name"
               placeholder="Project Name"
+            />
+          </td>
+          <td>
+            <input type="color"
+                class="form-control"
+                name="new-project-color"
+                v-model="newProject.color"
             />
           </td>
 
@@ -45,7 +60,7 @@ export default {
   },
   methods: {
     onSaveProjectClicked: async function() {
-      const newProject = { name: this.newProject.name };
+      const newProject = { name: this.newProject.name, color: this.newProject.color };
       await this.saveProject(newProject);
       this.newProject = {};
     }
