@@ -2,9 +2,9 @@
   <div>
     <h2>Time Editor</h2>
     <div class="d-flex p-2 bd-highlight">
-      <button type="button" class="btn btn-info btn-sm mr-5">Prev</button>
-      <strong>{{currentMonth.name}}</strong>
-      <button type="button" class="btn btn-info btn-sm ml-5">Next</button>
+      <button type="button" class="btn btn-info btn-sm mr-5" v-on:click="this.moveBackMonth">Prev</button>
+      <strong>{{currentMonth.format('MMMM')}}</strong>
+      <button type="button" class="btn btn-info btn-sm ml-5" v-on:click="this.moveForwardMonth">Next</button>
     </div>
 
     <div v-for="(week, index) in weeks" :key="index" class="row">
@@ -70,14 +70,10 @@ moment.updateLocale("en", {
 });
 
 export default {
-  props: ['onDaySelected', 'syncProjects', 'times'],
+  props: ['onDaySelected', 'syncProjects', 'times', 'moveBackMonth', 'moveForwardMonth', 'currentMonth'],
   data() {
     return {
-      weeks: [],
-      currentMonth: {
-        num: 0,
-        name: "January"
-      }
+
     };
   },
   methods: {
@@ -87,38 +83,39 @@ export default {
     }
   },
   mounted() {
-    const now = moment();
-    this.currentMonth = {
-      num: now.get("month"),
-      name: now.format("MMMM")
-    };
 
-    const days = [];
-    const firstMonday = moment()
-      .startOf("month")
-      .startOf("week");
-    const lastSunday = moment()
-      .endOf("month")
-      .endOf("week");
+  },
+  computed: {
+    weeks() {
+      const now = moment();
+      const days = [];
+      const firstMonday = moment(this.currentMonth)
+              .startOf("month")
+              .startOf("week");
+      const lastSunday = moment(this.currentMonth)
+              .endOf("month")
+              .endOf("week");
 
-    for (
-      let i = moment(firstMonday);
-      i.isSameOrBefore(lastSunday, "day");
-      i.add(1, "days")
-    ) {
-      days.push({
-        date: i.utcOffset(0, true).toISOString(false),
-        dayOfMonth: i.format("D"),
-        isInMonth: i.isSame(now, "month"),
-        isToday: i.isSame(now, "day")
-      });
+      for (
+              let i = moment(firstMonday);
+              i.isSameOrBefore(lastSunday, "day");
+              i.add(1, "days")
+      ) {
+        days.push({
+          date: i.utcOffset(0, true).toISOString(false),
+          dayOfMonth: i.format("D"),
+          isInMonth: i.isSame(this.currentMonth, "month"),
+          isToday: i.isSame(now, "day")
+        });
+      }
+
+      const result = [];
+      while (days.length > 7) {
+        result.push(days.splice(0, 7));
+      }
+      if (days.length > 0) result.push(days);
+      return result;
     }
-
-    this.weeks = [];
-    while (days.length > 7) {
-      this.weeks.push(days.splice(0, 7));
-    }
-    if (days.length > 0) this.weeks.push(days);
   }
 };
 </script>

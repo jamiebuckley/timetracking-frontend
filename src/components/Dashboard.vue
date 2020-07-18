@@ -24,6 +24,9 @@
           <TimeEditor
             v-bind:onDaySelected="onDaySelected"
             v-bind:syncProjects="syncProjects"
+            v-bind:currentMonth="startOfMonth"
+            v-bind:moveBackMonth="moveBackMonth"
+            v-bind:moveForwardMonth="moveForwardMonth"
             v-bind:times="times"
           />
         </div>
@@ -53,6 +56,8 @@ import moment from "moment";
 export default {
   data() {
     return {
+      startOfMonth: moment(),
+      endOfMonth: moment(),
       tab: "time",
       projects: [],
       selectedDay: null,
@@ -65,6 +70,8 @@ export default {
     DayEditor
   },
   mounted() {
+    this.startOfMonth = moment().startOf("month").utcOffset(0, true);
+    this.endOfMonth =  moment().endOf("month").utcOffset(0, true);
     this.fetchProjects();
     this.fetchTimes();
   },
@@ -74,10 +81,7 @@ export default {
       this.projects = projects;
     },
     fetchTimes: async function() {
-      const start = moment().startOf("month").toISOString();
-      const end = moment().endOf("month").toISOString();
-      const times = await ApiService.queryTimeEntries(start, end);
-      console.log(times);
+      const times = await ApiService.queryTimeEntries(this.startOfMonth.toISOString(), this.endOfMonth.toISOString());
       this.times = times;
     },
     saveProject: async function(project) {
@@ -104,6 +108,18 @@ export default {
     },
     syncProjects(projects) {
       this.projects = projects;
+    },
+    moveBackMonth() {
+      this.startOfMonth = moment(this.startOfMonth).utcOffset(0, true).subtract(1, 'month');
+      this.endOfMonth =  moment(this.endOfMonth).utcOffset(0, true).subtract(1, 'month');
+      this.fetchProjects();
+      this.fetchTimes();
+    },
+    moveForwardMonth() {
+      this.startOfMonth = moment(this.startOfMonth).utcOffset(0, true).add(1, 'month');
+      this.endOfMonth =  moment(this.endOfMonth).utcOffset(0, true).add(1, 'month');
+      this.fetchProjects();
+      this.fetchTimes();
     }
   },
   computed: {
