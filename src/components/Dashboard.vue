@@ -73,8 +73,8 @@ export default {
       this.projects = projects;
     },
     fetchTimes: async function() {
-      const start = moment().startOf("month");
-      const end = moment().endOf("month");
+      const start = moment().startOf("month").toISOString();
+      const end = moment().endOf("month").toISOString();
       const times = await ApiService.queryTimeEntries(start, end);
       console.log(times);
       this.times = times;

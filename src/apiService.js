@@ -48,13 +48,11 @@ class ApiService {
   }
 
   async queryTimeEntries(startDate, endDate) {
-    const response = await this.fetchWithHeaders(Constants.BASE_URL + Constants.TIMES_GET, {
-      method: 'POST',
-      body: JSON.stringify({
-        fromTime: startDate,
-        toTime: endDate
-      })
-    });
+    const url = new URL(Constants.BASE_URL + Constants.TIMES_GET);
+    const params = { startDate, endDate };
+    Object.keys(params).forEach(key => url.searchParams.append(key, params[key]))
+
+    const response = await this.fetchWithHeaders(url);
     return await response.json();
   }
 }
