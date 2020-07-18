@@ -7,6 +7,14 @@
       <button type="button" class="btn btn-info btn-sm ml-5" v-on:click="this.moveForwardMonth">Next</button>
     </div>
 
+    <div class="p-3">
+      <ul class="list-group">
+        <li v-for="project in this.projects" :key="project.name" class="list-group-item d-flex justify-content-between align-items-center">{{project.name}}
+          <span class="badge badge-primary badge-pill">{{timeForProject(project.name)}}</span>
+        </li>
+      </ul>
+    </div>
+
     <div v-for="(week, index) in weeks" :key="index" class="row">
       <div
         v-for="(day, index) in week"
@@ -92,6 +100,22 @@ export default {
         return t;
       })
       return times;
+    },
+    timeForProject(projectName) {
+      let numHours = 0;
+      let numDays = 0;
+      const projectTimes = this.times.filter(p => p.projectName === projectName);
+      for(let i = 0; i < projectTimes.length; i++) {
+        if (projectTimes[i].unit === 'days') numDays += projectTimes[i].amount;
+        if (projectTimes[i].unit === 'hours') numHours += projectTimes[i].amount;
+      }
+      let string = '';
+      if (numDays !== 0) {
+        string += `${numDays} days`;
+        if (numHours !== 0) string += ' and ';
+      }
+      if (numHours !== 0) string += `${numHours} hours`;
+      return string;
     }
   },
   mounted() {

@@ -1,5 +1,5 @@
 <template>
-  <div class="col w-50">
+  <div class="col-lg-8 col-xl-6">
     <h2>Projects</h2>
 
     <table class="table">
