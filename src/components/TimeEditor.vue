@@ -58,12 +58,13 @@ $light-green: rgb(217, 255, 213);
 }
 
 .tinyText {
-  font-size: 8px;
+  font-size: 12px;
   width:100%;
   display: block;
   padding: 4px;
   border-radius: 5px;
   margin-bottom: 2px;
+  color:white;
 }
 
 .unstyledList {
