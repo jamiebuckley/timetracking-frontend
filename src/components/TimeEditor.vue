@@ -26,9 +26,9 @@
         v-for="(day, index) in week"
         :key="index"
         class="col-sm day-box"
-        v-bind:class="{ isInMonth: day.isInMonth, isToday: day.isToday }"
+        v-bind:class="{ isInMonth: day.isInMonth, notInMonth: !day.isInMonth, isToday: day.isToday }"
         v-on:click="onDaySelected(day)"
-      >{{day.dayOfMonth}}
+      >{{day.dayOfMonth}} <span class="smallDayTitle">{{dayNames[index]}}</span>
         <ul class="unstyledList">
           <li v-for="(timeEntry, index) in timesForDay(day.date)" :key="index">
             <span class="tinyText" v-bind:style="{ background: timeEntry.background, color: timeEntry.color }">{{timeEntry.projectName}}: {{timeEntry.amount}}{{timeEntry.unit.slice(0, 1)}}</span>
@@ -50,6 +50,27 @@ $light-blue: rgb(243, 247, 248);
   padding: 8px;
   margin: 2px;
   background-color: $light-grey;
+}
+
+@media only screen and (max-width: 576px) {
+  .day-header {
+    display: none;
+  }
+
+  .notInMonth {
+    display: none;
+  }
+}
+
+.smallDayTitle {
+  color: #454545;
+  font-size: 10px;
+}
+
+@media only screen and (min-width: 576px) {
+  .smallDayTitle {
+    display: none;
+  }
 }
 
 .day-header {
