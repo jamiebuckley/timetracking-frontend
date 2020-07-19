@@ -17,21 +17,23 @@
 
     <div class="form-group">
       <label for="project">Project</label>
-      <select class="form-control" v-model="newTimeEntry.projectName">
+      <select class="form-control" v-model="newTimeEntry.projectName" v-bind:class="{ 'is-invalid': !!errors['projectName'] }">
         <option v-for="project in projects" :key="project.name">{{project.name}}</option>
       </select>
+      <div class="invalid-feedback" v-if="!!errors['projectName']">{{errors['projectName']}}</div>
     </div>
 
     <div class="row">
       <div class="col">
         <div class="form-group">
-          <label for="project">Number of units</label>
-          <input class="form-control" v-model="newTimeEntry.amount" placeholder="Number of units" />
+          <label for="project">Number of days/hours</label>
+          <input class="form-control" v-model="newTimeEntry.amount" placeholder="Number of days/hours" v-bind:class="{ 'is-invalid': !!errors['amount'] }"/>
+          <div class="invalid-feedback" v-if="!!errors['amount']">{{errors['amount']}}</div>
         </div>
       </div>
       <div class="col">
         <div class="form-group">
-          <label for="project">Unit type</label>
+          <label for="project">Days or hours</label>
           <select class="form-control" v-model="newTimeEntry.unit">
             <option value="days" selected="selected">Days</option>
             <option value="hours">Hours</option>
@@ -56,11 +58,19 @@ export default {
     return {
       newTimeEntry: {
         unit: "days"
+      },
+      errors: {
+
       }
     };
   },
   methods: {
     onSaveTimeClicked() {
+      this.errors = {};
+      if (this.newTimeEntry.projectName == null) this.errors['projectName'] = 'Must select project';
+      if (this.newTimeEntry.amount == null) this.errors['amount'] = 'Number of days/hours is required';
+      if (Object.keys(this.errors).length !== 0) return;
+
       this.saveTime(this.newTimeEntry);
       this.newTimeEntry = {
         unit: "days"

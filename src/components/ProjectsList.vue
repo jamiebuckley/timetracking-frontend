@@ -24,17 +24,21 @@
           <td>
             <input
               class="form-control"
+              v-bind:class="{ 'is-invalid': !!errors['name'] }"
               name="new-project-name"
               v-model="newProject.name"
               placeholder="Project Name"
             />
+            <div class="invalid-feedback" v-if="!!errors['name']">{{errors['name']}}</div>
           </td>
           <td>
             <input type="color"
                 class="form-control"
+                   v-bind:class="{ 'is-invalid': !!errors['color'] }"
                 name="new-project-color"
                 v-model="newProject.color"
             />
+            <div class="invalid-feedback" v-if="!!errors['color']">{{errors['color']}}</div>
           </td>
 
           <td>
@@ -51,7 +55,8 @@ export default {
   props: ['projects', 'saveProject', 'deleteProject'],
   data() {
     return {
-      newProject: {}
+      newProject: {},
+      errors: {}
     };
   },
   mounted() {
@@ -59,6 +64,11 @@ export default {
   },
   methods: {
     onSaveProjectClicked: async function() {
+      this.errors = {};
+      if (this.newProject.name == null) this.errors['name'] = 'Project name is required';
+      if (this.newProject.color == null) this.errors['color'] = 'Color is required';
+
+      if (Object.keys(this.errors).length !== 0) return;
       const newProject = { name: this.newProject.name, color: this.newProject.color };
       await this.saveProject(newProject);
       this.newProject = {};

@@ -12,7 +12,7 @@
     </div>
 
     <div class="p-3">
-      <span class="badge mr-3" v-for="project in timeForProject()" v-bind:style="{ background: project.color, color: 'white' }" :key="project">{{project.name}} - {{project.days}} days and {{project.hours}} hours</span>
+      <span class="badge mr-3" v-for="project in timeForProject()" v-bind:style="{ background: project.color, color: 'white' }" :key="project.name">{{project.name}} - {{project.days}} days and {{project.hours}} hours</span>
     </div>
 
     <div class="row">
