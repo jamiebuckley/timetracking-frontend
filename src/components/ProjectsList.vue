@@ -1,7 +1,6 @@
 <template>
   <div class="col-lg-8 col-xl-6">
-    <h2>Projects</h2>
-
+    <h5 class="my-md-4">Projects</h5>
     <table class="table">
       <tbody>
         <tr v-for="project in projects" :key="project.name">
@@ -18,7 +17,7 @@
             <button
               class="btn btn-danger ml-md-3 float-right"
               v-on:click="deleteProject(project.name)"
-            >Delete</button>
+            >Delete <span class="oi oi-ban"></span></button>
           </td>
         </tr>
         <tr>
@@ -39,7 +38,7 @@
           </td>
 
           <td>
-            <button class="btn btn-primary ml-md-3 float-right" v-on:click="onSaveProjectClicked">Add Project</button>
+            <button class="btn btn-primary ml-md-3 float-right" v-on:click="onSaveProjectClicked">Add Project <span class="oi oi-plus"></span></button>
           </td>
         </tr>
       </tbody>

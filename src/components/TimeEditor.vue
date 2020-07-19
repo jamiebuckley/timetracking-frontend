@@ -1,18 +1,18 @@
 <template>
   <div>
-    <h2>Time Editor</h2>
-    <div class="d-flex p-2 bd-highlight">
-      <button type="button" class="btn btn-info btn-sm mr-5" v-on:click="this.moveBackMonth">Prev</button>
-      <strong>{{currentMonth.format('MMMM')}}</strong>
-      <button type="button" class="btn btn-info btn-sm ml-5" v-on:click="this.moveForwardMonth">Next</button>
+    <div class="d-flex justify-content-center p-2 bd-highlight">
+      <button type="button" class="btn btn-outline-info btn-sm mr-5" v-on:click="this.moveBackMonth">
+        <span class="oi oi-arrow-left"></span>
+        Prev
+      </button>
+      <h4>{{currentMonth.format('MMMM')}}</h4>
+      <button type="button" class="btn btn-outline-info btn-sm ml-5" v-on:click="this.moveForwardMonth">Next
+        <span class="oi oi-arrow-right"></span>
+      </button>
     </div>
 
     <div class="p-3">
-      <ul class="list-group">
-        <li v-for="project in timeForProject()" :key="project" class="list-group-item d-flex justify-content-between align-items-center">{{project.name}}
-          <span class="badge badge-primary badge-pill">{{project.days}} days and {{project.hours}} hours</span>
-        </li>
-      </ul>
+      <span class="badge mr-3" v-for="project in timeForProject()" v-bind:style="{ background: project.color, color: 'white' }" :key="project">{{project.name}} - {{project.days}} days and {{project.hours}} hours</span>
     </div>
 
     <div v-for="(week, index) in weeks" :key="index" class="row">
@@ -41,6 +41,7 @@ $light-green: rgb(217, 255, 213);
 .day-box {
   height: 120px;
   padding: 8px;
+  margin: 2px;
   background-color: $light-grey;
 }
 
@@ -58,11 +59,12 @@ $light-green: rgb(217, 255, 213);
 }
 
 .tinyText {
-  font-size: 12px;
+  font-size: 10px;
+  font-weight: 500;
   width:100%;
   display: block;
-  padding: 4px;
-  border-radius: 5px;
+  padding: 2px;
+  border-radius: 2px;
   margin-bottom: 2px;
   color:white;
 }
@@ -103,6 +105,7 @@ export default {
       return times;
     },
     timeForProject() {
+      const colorsForProjects = this.projects.reduce((acc, curr) => ({ ...acc, [curr.name]: curr.color }), {});
       const data = this.times.reduce((acc, curr) => {
         const thisDays = curr.unit === 'days' ? curr.amount : 0;
         const thisHours = curr.unit === 'hours' ? curr.amount : 0;
@@ -111,6 +114,7 @@ export default {
           [curr.projectName]: {
             days: (acc[curr.projectName]?.days ?? 0) + thisDays,
             hours: (acc[curr.projectName]?.hours ?? 0) + thisHours,
+            color: colorsForProjects[curr.projectName]
           }
         };
       }, {});

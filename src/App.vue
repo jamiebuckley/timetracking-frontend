@@ -9,6 +9,11 @@
   </div>
 </template>
 
+
+<style lang="scss">
+
+</style>
+
 <script>
 import Header from './components/Header.vue';
 import Dashboard from './components/Dashboard';

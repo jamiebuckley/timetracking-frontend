@@ -9,7 +9,7 @@
             <button
               class="btn btn-danger ml-md-3 float-right"
               v-on:click="deleteTimeEntry(timeEntry)"
-            >Delete</button>
+            >Delete <span class="oi oi-ban"></span></button>
           </td>
         </tr>
       </tbody>
@@ -40,8 +40,8 @@
       </div>
     </div>
 
-    <button class="btn btn-danger ml-md-3" v-on:click="this.cancelDaySelection">Close</button>
-    <button class="btn btn-primary ml-md-3 float-right" v-on:click="onSaveTimeClicked">Add</button>
+    <button class="btn btn-danger ml-md-3" v-on:click="this.cancelDaySelection">Cancel <span class="oi oi-delete"></span></button>
+    <button class="btn btn-primary ml-md-3 float-right" v-on:click="onSaveTimeClicked">Add <span class="oi oi-plus"></span></button>
   </div>
 </template>
 
