@@ -15,6 +15,12 @@
       <span class="badge mr-3" v-for="project in timeForProject()" v-bind:style="{ background: project.color, color: 'white' }" :key="project">{{project.name}} - {{project.days}} days and {{project.hours}} hours</span>
     </div>
 
+    <div class="row">
+      <div
+              v-for="day in dayNames"
+              :key="day"
+              class="col-sm day-header">{{day}}</div>
+    </div>
     <div v-for="(week, index) in weeks" :key="index" class="row">
       <div
         v-for="(day, index) in week"
@@ -35,8 +41,9 @@
 
 <style lang="scss">
 $light-grey: #e2e2e2;
-$light-yellow: #ffffe3;
+$light-yellow: #eeeee6;
 $light-green: rgb(217, 255, 213);
+$light-blue: rgb(243, 247, 248);
 
 .day-box {
   height: 120px;
@@ -45,8 +52,16 @@ $light-green: rgb(217, 255, 213);
   background-color: $light-grey;
 }
 
+.day-header {
+  background-color: lighten(#dc6123, 5%);
+  margin: 2px;
+  padding: 4px;
+  padding-left: 8px;
+  color: white;
+}
+
 .isInMonth {
-  background-color: white;
+  background-color: $light-blue;
 
   &:hover {
     background-color: $light-yellow;
@@ -89,7 +104,7 @@ export default {
   props: ['onDaySelected', 'syncProjects', 'times', 'moveBackMonth', 'moveForwardMonth', 'currentMonth', 'projects'],
   data() {
     return {
-
+      dayNames: ['Mon', 'Tues', 'Wed', 'Thur', 'Fri', 'Sat', 'Sun']
     };
   },
   methods: {
