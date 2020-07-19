@@ -1,4 +1,4 @@
-# timetracking-frontend
+# Time Tracking
 
 [![Build Status](https://dev.azure.com/boreallodgeltd/Timetracking/_apis/build/status/jamiebuckley.timetracking-frontend?branchName=master)](https://dev.azure.com/boreallodgeltd/Timetracking/_build/latest?definitionId=2&branchName=master)
 
