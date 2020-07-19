@@ -7,6 +7,7 @@
           <td>{{project.name}}</td>
           <td>
             <input type="color"
+                   style="min-width: 50px;max-width: 80px"
                    class="form-control"
                    name="new-project-color"
                    v-model="project.color"
@@ -16,8 +17,9 @@
           <td>
             <button
               class="btn btn-danger ml-md-3 float-right"
-              v-on:click="deleteProject(project.name)"
-            >Delete <span class="oi oi-ban"></span></button>
+              v-on:click="deleteProject(project.name)">
+              <span class="d-none d-sm-none d-lg-inline-block">Delete</span>
+              <span class="oi oi-ban"></span></button>
           </td>
         </tr>
         <tr>
@@ -34,6 +36,7 @@
           <td>
             <input type="color"
                 class="form-control"
+                   style="min-width: 50px;max-width: 80px"
                    v-bind:class="{ 'is-invalid': !!errors['color'] }"
                 name="new-project-color"
                 v-model="newProject.color"
@@ -42,7 +45,7 @@
           </td>
 
           <td>
-            <button class="btn btn-primary ml-md-3 float-right" v-on:click="onSaveProjectClicked">Add Project <span class="oi oi-plus"></span></button>
+            <button class="btn btn-primary ml-md-3 float-right" v-on:click="onSaveProjectClicked"><span class="d-none d-sm-none d-lg-inline-block">Add</span> <span class="oi oi-plus"></span></button>
           </td>
         </tr>
       </tbody>

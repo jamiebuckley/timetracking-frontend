@@ -5,7 +5,7 @@
     <ul class="navbar-nav mr-auto"></ul>
     <div class="my-2 my-lg-0">
       <div v-if="profile">
-        <span class="mr-3">Signed in as {{profile.name}}</span>
+        <span class="mr-3 d-none d-sm-inline-block">Signed in as {{profile.name}}</span>
         <button class="btn btn-primary" v-on:click="$emit('clickSignOut')">Sign Out <span class="oi oi-account-logout"></span></button>
       </div>
       <button class="btn btn-primary" v-else id="google-signin-button" v-on:click="$emit('clickSignIn')">Sign In <span class="oi oi-account-login"></span></button>
