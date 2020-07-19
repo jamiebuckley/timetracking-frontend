@@ -12,7 +12,9 @@
     </div>
 
     <div class="p-3">
-      <span class="badge mr-3" v-for="project in timeForProject()" v-bind:style="{ background: project.color, color: 'white' }" :key="project.name">{{project.name}} - {{project.days}} days and {{project.hours}} hours</span>
+      <span class="badge mr-3" v-for="project in timeForProject()"
+            v-bind:style="{ background: project.color, color: project.textColor }"
+            :key="project.name">{{project.name}} - {{project.days}} days and {{project.hours}} hours</span>
     </div>
 
     <div class="row">
@@ -134,7 +136,10 @@ export default {
       let times = this.times.filter(t => moment(t.dateTime).isSame(dayMoment, "day"));
       times = times.map(t => {
         const project = this.projects.find(p => p.name === t.projectName);
-        if (project) t.background = project.color;
+        if (project) {
+          t.background = project.color;
+          t.color = this.highContrastText(project.color);
+        }
         else t.background = '#EEEEEE';
         return t;
       })
@@ -145,16 +150,26 @@ export default {
       const data = this.times.reduce((acc, curr) => {
         const thisDays = curr.unit === 'days' ? curr.amount : 0;
         const thisHours = curr.unit === 'hours' ? curr.amount : 0;
+        const backgroundColor = colorsForProjects[curr.projectName];
+        const textColor = this.highContrastText(backgroundColor);
         return {
           ...acc,
           [curr.projectName]: {
             days: (acc[curr.projectName]?.days ?? 0) + thisDays,
             hours: (acc[curr.projectName]?.hours ?? 0) + thisHours,
-            color: colorsForProjects[curr.projectName]
+            color: colorsForProjects[curr.projectName],
+            textColor
           }
         };
       }, {});
       return Object.keys(data).map(name => ({ name , ...data[name] }));
+    },
+    highContrastText(inputColor) {
+      var color = (inputColor.charAt(0) === '#') ? inputColor.substring(1, 7) : inputColor;
+      var r = parseInt(color.substring(0, 2), 16); // hexToR
+      var g = parseInt(color.substring(2, 4), 16); // hexToG
+      var b = parseInt(color.substring(4, 6), 16); // hexToB
+      return (((r * 0.299) + (g * 0.587) + (b * 0.114)) > 186) ? '#000000' : '#FFFFFF';
     }
   },
   mounted() {
