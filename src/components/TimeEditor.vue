@@ -9,8 +9,8 @@
 
     <div class="p-3">
       <ul class="list-group">
-        <li v-for="project in this.projects" :key="project.name" class="list-group-item d-flex justify-content-between align-items-center">{{project.name}}
-          <span class="badge badge-primary badge-pill">{{timeForProject(project.name)}}</span>
+        <li v-for="project in timeForProject()" :key="project" class="list-group-item d-flex justify-content-between align-items-center">{{project.name}}
+          <span class="badge badge-primary badge-pill">{{project.days}} days and {{project.hours}} hours</span>
         </li>
       </ul>
     </div>
@@ -102,21 +102,19 @@ export default {
       })
       return times;
     },
-    timeForProject(projectName) {
-      let numHours = 0;
-      let numDays = 0;
-      const projectTimes = this.times.filter(p => p.projectName === projectName);
-      for(let i = 0; i < projectTimes.length; i++) {
-        if (projectTimes[i].unit === 'days') numDays += projectTimes[i].amount;
-        if (projectTimes[i].unit === 'hours') numHours += projectTimes[i].amount;
-      }
-      let string = '';
-      if (numDays !== 0) {
-        string += `${numDays} days`;
-        if (numHours !== 0) string += ' and ';
-      }
-      if (numHours !== 0) string += `${numHours} hours`;
-      return string;
+    timeForProject() {
+      const data = this.times.reduce((acc, curr) => {
+        const thisDays = curr.unit === 'days' ? curr.amount : 0;
+        const thisHours = curr.unit === 'hours' ? curr.amount : 0;
+        return {
+          ...acc,
+          [curr.projectName]: {
+            days: (acc[curr.projectName]?.days ?? 0) + thisDays,
+            hours: (acc[curr.projectName]?.hours ?? 0) + thisHours,
+          }
+        };
+      }, {});
+      return Object.keys(data).map(name => ({ name , ...data[name] }));
     }
   },
   mounted() {
