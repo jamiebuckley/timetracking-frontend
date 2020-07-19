@@ -2,7 +2,11 @@
 
 [![Build Status](https://dev.azure.com/boreallodgeltd/Timetracking/_apis/build/status/jamiebuckley.timetracking-frontend?branchName=master)](https://dev.azure.com/boreallodgeltd/Timetracking/_build/latest?definitionId=2&branchName=master)
 
-[A simple app for time tracking](https://timetrackingstorageacct.z33.web.core.windows.net/)
+## A very simple app for tracking time on projects
+
+[Link to app here](https://timetrackingstorageacct.z33.web.core.windows.net/)
+
+![ScreenShots](https://user-images.githubusercontent.com/4345596/87874403-7199d700-c9c1-11ea-8475-891ea569e74e.png)
 
 ## Project setup
 ```
