@@ -11,7 +11,10 @@
 
 
 <style lang="scss">
-
+  body {
+    background-repeat: no-repeat;
+    background-size: auto;
+  }
 </style>
 
 <script>
