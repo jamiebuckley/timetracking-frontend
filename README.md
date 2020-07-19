@@ -2,7 +2,11 @@
 
 [![Build Status](https://dev.azure.com/boreallodgeltd/Timetracking/_apis/build/status/jamiebuckley.timetracking-frontend?branchName=master)](https://dev.azure.com/boreallodgeltd/Timetracking/_build/latest?definitionId=2&branchName=master)
 
-## A very simple app for tracking time on projects
+A very simple and free app for tracking time on projects
+
+No frills, bells or whistles, and especially no frilly whistly bells.
+
+100% serverless on Azure.
 
 [Link to app here](https://timetrackingstorageacct.z33.web.core.windows.net/)
 
